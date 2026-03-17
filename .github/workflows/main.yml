@@ -23,16 +23,23 @@ jobs :
       - with:
           node-version: '22'
 
-      - name : Installed Newman and htmlextra
+      - name : Install Newman and htmlextra
         run : |
-              newman run 'Inwarranty-flow Collection.postman_collection.json' \
-              -e QA.postman_environment.json \
-              -d testData.csv \
-              -r cli,htmlextra
+              
+               npm install -g newman
+               newman-reporter-htmlextra
               
 
        - name : Run the postman collection with Postman
-         run : |
-               npm install -g newman
-               newman-reporter-htmlextra
-          
+         run :  |
+               newman run 'Inwarranty-flow Collection.postman_collection.json' \
+               -e QA.postman_environment.json \
+               -d testData.csv \
+               -r cli,htmlextra
+
+       - name : newman report
+         uses : actions/upload-artifact@v7.0.0
+         with :
+           name : Newman Report
+           path : newman/*.html
+        

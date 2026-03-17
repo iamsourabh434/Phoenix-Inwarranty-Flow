@@ -9,34 +9,34 @@ on :
     - cron : 00 14 * * *  # 7:30 PM IST
     - cron : 00 06 * * 1-5 
 
-jobs :
+jobs:
   run-postman-tests:
     runs-on: ubuntu-latest
 
-    steps :
-      - name : Checkout the code
-      - uses : actions/checkout@v6.0.2
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v6.0.2
 
-      - name : Installed Node js and npm
-      - uses : actions/setup-node@v6.3.0
-      - with :
-        node-version: '22'
+      - name: Installed Node js and npm
+        uses: actions/setup-node@v6.3.0
+      - with:
+          node-version: '22'
 
-      - name : Install Newman and htmlextra
-        run : | 
+      - name: Install Newman and htmlextra
+        run: | 
              npm install -g newman
-             newman-reporter-htmlextra
+             npm install -g newman-reporter-htmlextra
               
 
-       - name : Run the postman collection with Postman
-         run : |
-               newman run 'Inwarranty-flow Collection.postman_collection.json' \
-               -e QA.postman_environment.json \
-               -d testData.csv \
-               -r cli,htmlextra
+       - name: Run the postman collection with Postman
+         run: |
+          newman run 'Inwarranty-flow Collection.postman_collection.json' \
+          -e QA.postman_environment.json \
+          -d testData.csv \
+          -r cli,htmlextra
 
-       - name : newman report
-         uses : actions/upload-artifact@v7.0.0
-         with :
-           name : Newman Report
-           path : newman/*.html
+       - name: newman report
+         uses: actions/upload-artifact@v7.0.0
+         with:
+           name: Newman Report
+           path: newman/*.html
